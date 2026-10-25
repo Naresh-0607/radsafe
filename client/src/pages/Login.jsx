@@ -63,7 +63,7 @@ export default function Login() {
           </div>
         </div>
         <div className="login-foot">
-          PHASE 01 <span>Academic simulation · Synthetic data only</span>
+          <span>Facility safety platform · Operational monitoring</span>
         </div>
       </section>
       <section className="login-form-side">

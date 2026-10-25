@@ -262,8 +262,8 @@ export default function Reports() {
         )}
       </section>
       <div className="data-note">
-        Academic summaries only. Radiation classifications use demonstration thresholds captured
-        when each reading was submitted.
+        Radiation classifications use demonstration thresholds captured when each reading was
+        submitted.
       </div>
       {detail && (
         <RecordDetail record={detail} kind={filters.kind} onClose={() => setDetail(null)} />

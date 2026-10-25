@@ -90,8 +90,7 @@ export default function Dashboard() {
                 : humanize(data.overallStatus) + ' demonstration alerts need attention'}
           </strong>
           <p>
-            Academic simulation · Facility status reflects synthetic readings and unresolved demo
-            alerts.
+            Facility status reflects synthetic readings and unresolved demo alerts.
           </p>
         </div>
         <span className="banner-label">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
   Radiation,
@@ -20,6 +20,8 @@ import {
   Smartphone,
   WifiOff,
   CheckCircle2,
+  MoreVertical,
+  RotateCw,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -46,8 +48,23 @@ export default function DashboardLayout({ role }) {
   const toast = useToast();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const { canInstall, isInstalled, isOnline, installApp } = usePWA();
+
+  function toggleSidebar() {
+    if (window.innerWidth <= 960) {
+      setOpen((prev) => !prev);
+    } else {
+      setCollapsed((prev) => !prev);
+    }
+  }
+
+  useEffect(() => {
+    setOpen(false);
+    setMenuOpen(false);
+  }, [location.pathname]);
   const admin = role === 'ADMIN';
   const base = admin ? '/admin' : '/officer';
   const links = admin ? adminLinks : officerLinks;
@@ -79,7 +96,7 @@ export default function DashboardLayout({ role }) {
           onClick={() => setOpen(false)}
         />
       )}
-      <aside className={`sidebar ${open ? 'is-open' : ''}`}>
+      <aside className={`sidebar ${open ? 'is-open' : ''} ${collapsed ? 'desktop-collapsed' : ''}`}>
         <NavLink to={`${base}/dashboard`} className="brand">
           <span className="brand-icon">
             <Radiation size={26} />
@@ -129,22 +146,7 @@ export default function DashboardLayout({ role }) {
               </button>
             </div>
           )}
-          {isInstalled && (
-            <div className="pwa-badge-installed">
-              <CheckCircle2 size={13} />
-              <span>Field PWA Active</span>
-            </div>
-          )}
-          <div className="simulation-card">
-            <ShieldCheck size={22} />
-            <strong>Built for learning</strong>
-            <p>
-              Academic simulation.
-              <br />
-              Synthetic readings only.
-            </p>
-            <span>PHASE 1</span>
-          </div>
+
           <div className="sidebar-user">
             <span className="avatar">
               {user.name
@@ -163,15 +165,17 @@ export default function DashboardLayout({ role }) {
           </div>
         </div>
       </aside>
-      <div className="main-shell">
+      <div className={`main-shell ${collapsed ? 'sidebar-collapsed' : ''}`}>
         <header className="topbar">
           <div className="breadcrumb">
             <button
+              type="button"
               className="menu-button"
-              aria-label="Open navigation"
-              onClick={() => setOpen(true)}
+              aria-label="Toggle navigation menu"
+              title="Toggle navigation"
+              onClick={toggleSidebar}
             >
-              <Menu size={21} />
+              <Menu size={20} />
             </button>
             <span>Facility workspace</span>
             <span className="breadcrumb-slash">/</span>
@@ -194,10 +198,71 @@ export default function DashboardLayout({ role }) {
                 <span>Install App</span>
               </button>
             )}
-            <span className="simulation-pill">
-              <span /> Simulation mode
-            </span>
+
             <span className="role-badge">{admin ? 'ADMIN' : 'SAFETY OFFICER'}</span>
+
+            {/* In-app Three-Dot Action Menu */}
+            <div className="topbar-menu-wrapper">
+              <button
+                type="button"
+                className="topbar-dot-menu-btn"
+                aria-label="More actions"
+                title="Application menu"
+                onClick={() => setMenuOpen((prev) => !prev)}
+              >
+                <MoreVertical size={18} />
+              </button>
+              {menuOpen && (
+                <>
+                  <div className="dropdown-overlay" onClick={() => setMenuOpen(false)} />
+                  <div className="topbar-dropdown-menu">
+                    <div className="dropdown-header">
+                      <strong>RadSafe Mobile</strong>
+                      <small>
+                        {admin ? 'Admin' : 'Officer'} Mode · {isOnline ? 'Online' : 'Offline'}
+                      </small>
+                    </div>
+                    <button
+                      type="button"
+                      className="dropdown-item"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        window.location.reload();
+                      }}
+                    >
+                      <RotateCw size={14} />
+                      <span>Refresh App</span>
+                    </button>
+                    {canInstall && (
+                      <button
+                        type="button"
+                        className="dropdown-item"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          installApp();
+                        }}
+                      >
+                        <Download size={14} />
+                        <span>Install to Home Screen</span>
+                      </button>
+                    )}
+                    <div className="dropdown-divider" />
+                    <button
+                      type="button"
+                      className="dropdown-item danger"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        signOut();
+                      }}
+                      disabled={signingOut}
+                    >
+                      <LogOut size={14} />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </header>
         <main>
@@ -205,9 +270,9 @@ export default function DashboardLayout({ role }) {
         </main>
         <footer className="app-footer">
           <span>
-            RadSafe <span className="muted">/</span> Academic safety monitoring
+            RadSafe <span className="muted">/</span> Facility safety monitoring
           </span>
-          <span>Demo data · No equipment integration</span>
+          <span>Operational safety management</span>
         </footer>
       </div>
     </div>

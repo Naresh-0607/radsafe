@@ -321,7 +321,7 @@ function WorkflowForm({ inspection, initial, zones, alerts, onClose, onSave }) {
       title={(initial._id ? 'Update ' : 'Create ') + (inspection ? 'inspection' : 'incident')}
       description={
         inspection
-          ? 'Academic inspection checklist; adapt labels to your coursework.'
+          ? 'Complete safety checklist items and verify facility compliance.'
           : 'Document the event and its investigation.'
       }
       wide
