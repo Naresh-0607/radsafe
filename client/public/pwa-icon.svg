@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="radBg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="50%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#115e59"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#radBg)"/>
+  <rect x="16" y="16" width="480" height="480" rx="96" stroke="#5eead4" stroke-opacity="0.25" stroke-width="4"/>
+  <g transform="translate(256, 256)" filter="url(#glow)">
+    <!-- Center radiation circle -->
+    <circle r="36" fill="#ffffff"/>
+    <circle r="56" fill="none" stroke="url(#radBg)" stroke-width="12"/>
+    <!-- Blade 1 (Top) -->
+    <path d="M 0 -72 A 160 160 0 0 1 138.56 8 A 72 72 0 0 0 0 -72 Z" fill="#ffffff" transform="rotate(-60)"/>
+    <!-- Blade 2 (Bottom Right) -->
+    <path d="M 0 -72 A 160 160 0 0 1 138.56 8 A 72 72 0 0 0 0 -72 Z" fill="#ffffff" transform="rotate(60)"/>
+    <!-- Blade 3 (Bottom Left) -->
+    <path d="M 0 -72 A 160 160 0 0 1 138.56 8 A 72 72 0 0 0 0 -72 Z" fill="#ffffff" transform="rotate(180)"/>
+  </g>
+</svg>
